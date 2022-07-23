@@ -1,29 +1,42 @@
 # This a script to 
 # clean the Harvard's
 # Implicit Project
-# Data
+# Race IAT Data
 
 # Date: July 22nd, 2022
 
 ### Open Implicit Data
 
-Skin_IAT <- fread(Implicity_Harvard)
+Race_IAT_1 <- read_csv(Race_2002_2014_Implicit_Harvard)%>% 
+  filter(session_status == "C")
+Race_IAT_2 <- read_csv(Race_2015_2019_Implicit_Harvard) %>% 
+  filter(session_status == "C")
+# Race_IAT_3 <- read_sav(Race_2020_Implicit_Harvard) %>% 
+#   filter(session_status == "C")
+# Race_IAT_4 <- read_sav(Race_2021_Implicit_Harvard) %>% 
+#   filter(session_status == "C")
 
-# filter incomplete responses
-Skin_IAT <- Skin_IAT[session_status == "C"]
-Skin_IAT <- as.data.frame(Skin_IAT)
+# append the three datasets
+Race_IAT <- rbind(Race_IAT_1, Race_IAT_2)
+rm(Race_IAT_1, Race_IAT_2)
+
+# Race_IAT_2 <- dplyr::bind_rows(Race_IAT_3, Race_IAT_4)
+# rm(Race_IAT_3, Race_IAT_4)
+
+# Race_IAT <- dplyr::bind_rows(Race_IAT_2, Race_IAT)
+# rm(Race_IAT_2)
 
 # keep some variables
-Skin_IAT <- Skin_IAT %>%
-  select(session_id, D_biep.LightSkin_Good_all, D_biep.LightSkin_Good_36,
-         att_7, D_biep.LightSkin_Good_47, 
+Race_IAT <- Race_IAT %>%
+  select(session_id, D_biep.White_Good_all, D_biep.White_Good_36,
+         att_7, D_biep.White_Good_47, 
          raceomb, birthsex, politicalid, 
          politicalid_7, age, year, num, 
          religion, countrycit, religionid,
          MSANo, CountyNo, MSAName, STATE,
          pct_300, PCT_error_3467, 
          session_status, edu_14) %>%
-  mutate(Implicit=D_biep.LightSkin_Good_all, # create implicit prejudice var
+  mutate(Implicit=D_biep.White_Good_all, # create implicit prejudice var
          Explicit=att_7, # create explicit prejudice var
          
          # create an error variable to remove
@@ -37,7 +50,7 @@ Skin_IAT <- Skin_IAT %>%
                             birthsex == 1 ~ 0)) %>% 
   filter(Error == 'No')
 
-Skin_IAT <- Skin_IAT %>% 
+Race_IAT <- Race_IAT %>% 
   mutate(
     # recode political ideology
     politics = ifelse(politicalid == -999, NA, politicalid),
@@ -56,8 +69,9 @@ Skin_IAT <- Skin_IAT %>%
                           age >= 31 & age <= 40  ~ 3,
                           age >= 41 & age <= 50  ~ 4,
                           age >= 51 & age <= 60  ~ 5,
-                          age >= 61 & age <= 200 ~ 6))
+                          age >= 61 & age <= 200 ~ 6)) %>% 
+  rename("state" = "STATE")
 
 # save data
 
-write_csv(Skin_IAT, file.path(datasets,"Skin_IAT_Clean.csv"))
+write_csv(Race_IAT, file.path(datasets,"Race_IAT_Clean.csv"))

@@ -10,31 +10,37 @@ Race_IAT <- Race_IAT[Race_IAT$state != "",]
 # merge state info with iat data
 Race_IAT <- merge(Race_IAT, state_info, 
                     by = "state", 
-                    all = TRUE)
+                    all = TRUE) %>% 
+  rename(state_abr = state)
+
+Race_IAT <- Race_IAT %>% 
+  rename(state = state.name)
 
 race_grouped_bystate <- Race_IAT %>% 
-  group_by(state.name) %>% 
+  group_by(state) %>% 
   summarise(value = mean(Implicit, na.rm = TRUE)) %>% 
-  select(region = state.name, 
+  select(state, 
          value)
 
 ### Get lat & long info -----
 
 # this "states" dataframe has the lat & long info needed for mapping.
-states <- map_data("state")
-states$state.name <- states$region
+states <- st_as_sf(map('state', plot = TRUE, fill = TRUE))
+# states <- map_data("state")
+states <- states %>% 
+  rename(state = ID)
 
 # join IAT + lowercase names to df that has lat & long
 race_grouped_bystate <- inner_join(race_grouped_bystate, 
                                    states, 
-                                   by = "region") 
+                                   by = "state") 
+race_grouped_bystate <- st_as_sf(race_grouped_bystate)
 
 ## # ggplot without labels -----
 
-ggplot() + geom_polygon(data = race_grouped_bystate, 
-                        aes(x = long, y = lat, group = group, fill = value), 
-                        color = "white") + 
-  coord_map("albers",  at0 = 45.5, lat1 = 29.5) +
+ggplot() + geom_sf(data = race_grouped_bystate, 
+                        aes(fill = value), 
+                        color = "white")+
   theme(legend.position = "bottom") +
   guides(fill = guide_colorbar(barwidth = 20, barheight = 1.0)) 
 

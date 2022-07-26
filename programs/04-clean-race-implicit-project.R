@@ -5,7 +5,7 @@
 
 # Date: July 22nd, 2022
 
-### Open Implicit Data
+### Open Race IAT Data
 
 Race_IAT_1 <- read_csv(Race_2002_2014_Implicit_Harvard)%>% 
   filter(session_status == "C")

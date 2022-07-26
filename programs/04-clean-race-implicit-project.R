@@ -11,10 +11,10 @@ Race_IAT_1 <- read_csv(Race_2002_2014_Implicit_Harvard)%>%
   filter(session_status == "C")
 Race_IAT_2 <- read_csv(Race_2015_2019_Implicit_Harvard) %>% 
   filter(session_status == "C")
-# Race_IAT_3 <- read_sav(Race_2020_Implicit_Harvard) %>% 
-#   filter(session_status == "C")
-# Race_IAT_4 <- read_sav(Race_2021_Implicit_Harvard) %>% 
-#   filter(session_status == "C")
+Race_IAT_3 <- read_sav(Race_2020_Implicit_Harvard) %>%
+  filter(session_status == "C")
+Race_IAT_4 <- read_sav(Race_2021_Implicit_Harvard) %>%
+  filter(session_status == "C")
 
 # append the three datasets
 Race_IAT <- rbind(Race_IAT_1, Race_IAT_2)

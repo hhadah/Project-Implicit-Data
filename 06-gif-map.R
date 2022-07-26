@@ -9,18 +9,19 @@ Race_IAT <- Race_IAT[Race_IAT$state != "",]
 
 # merge state info with iat data
 Race_IAT <- merge(Race_IAT, state_info, 
-                    by = "state", 
-                    all = TRUE) %>% 
+                  by = "state", 
+                  all = TRUE) %>% 
   rename(state_abr = state)
 
 Race_IAT <- Race_IAT %>% 
   rename(state = state.name)
 
-race_grouped_bystate <- Race_IAT %>% 
-  group_by(state) %>% 
+race_grouped_bystate_year <- Race_IAT %>% 
+  group_by(state, year) %>% 
   summarise(value = mean(Implicit, na.rm = TRUE)) %>% 
   select(state, 
-         value)
+         value,
+         year)
 
 ### Get lat & long info -----
 
@@ -31,19 +32,22 @@ states <- states %>%
   rename(state = ID)
 
 # join IAT + lowercase names to df that has lat & long
-race_grouped_bystate <- inner_join(race_grouped_bystate, 
+race_grouped_bystate_year <- inner_join(race_grouped_bystate_year, 
                                    states, 
                                    by = "state") 
-race_grouped_bystate <- st_as_sf(race_grouped_bystate)
+race_grouped_bystate_year <- st_as_sf(race_grouped_bystate_year)
 
-## # ggplot without labels -----
 
-ggplot() + geom_sf(data = race_grouped_bystate, 
-                        aes(fill = value), 
-                        color = "white")+
+library(gganimate)
+
+ggplot() + geom_sf(data = race_grouped_bystate_year, 
+                   aes(fill = value), 
+                   color = "white")+
   theme(legend.position = "bottom") +
-  labs(title = "Implicit Prejeduice Scores: by State") +
-  guides(fill = guide_colorbar(barwidth = 20, barheight = 1.0)) 
+  labs(title = 'Year: {frame_time}') +
+  transition_time(year) +
+  ease_aes('linear')
+guides(fill = guide_colorbar(barwidth = 20, barheight = 1.0)) 
 
 ggsave(file.path(figures_wd,"map_all.png"))
 

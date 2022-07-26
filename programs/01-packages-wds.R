@@ -43,7 +43,8 @@ theme_customs <- theme(
   plot.title.position = 'plot',
   plot.title = element_text(
     face = 'bold', 
-    colour = thematic::okabe_ito(8)[6],
+    colour = "black",
+    #colour = thematic::okabe_ito(8)[6],
     margin = margin(t = 2, r = 0, b = 7, l = 0, unit = "mm")
   ),
 )

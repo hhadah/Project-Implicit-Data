@@ -22,7 +22,7 @@ pacman::p_load(tictoc, parallel, pbapply, future,
                sampleSelection, textme, paletteer, 
                wesanderson, patchwork, RStata, car,
                #textme, lodown, 
-               BiocManager, maps, sf)
+               BiocManager, maps, sf, Polychrome, cdlTools)
 
 options("RStata.StataPath" = "/Applications/Stata/StataSE.app/Contents/MacOS/stata-se")
 options("RStata.StataVersion" = 17)

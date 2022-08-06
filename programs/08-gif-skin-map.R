@@ -38,30 +38,50 @@ skin_grouped_bystate <- inner_join(skin_grouped_bystate,
 skin_grouped_bystate <- st_as_sf(skin_grouped_bystate)
 
 
+# use for loop to plot all maps
+
+for (year_map in seq(2004,2021)) {
+  map <- ggplot() + geom_sf(data = skin_grouped_bystate |> filter(year == year_map), 
+                            aes(fill = value), 
+                            color = "white")+
+    scale_fill_viridis_c(option = "D") +
+    theme(legend.position = "bottom") +
+    labs(title = paste0("Implicit Skin Tone Prejeduice 
+       Scores: by State ", year_map))
+  map
+  ggsave(path = figures_wd, filename = paste0(year_map,"map.png"))
+}
+
+# animation
 library(gganimate)
 library(transformr)
 library(tweenr)
-
+skin_grouped_bystate <- skin_grouped_bystate |> 
+  mutate(group = 1)
 map <- ggplot() + geom_sf(data = skin_grouped_bystate, 
-                   aes(fill = value), 
-                   color = "white")+
-  theme(legend.position = "bottom")
+                          aes(fill = value, 
+                              group=group)) +
+  scale_fill_viridis_c(option = "D") 
+map
+num_years <- max(skin_grouped_bystate$year) - min(skin_grouped_bystate$year) + 1
 
 map_with_animation <- map +
-  labs(title = "Implicit Skin Tone Prejeduice 
-       Scores: by State {frame_time}") + 
   # transition_time(year) +
-  transition_time(year) +
+  transition_states(year)
+# +
+#   labs(title = "Implicit Skin Tone Prejeduice 
+#        Scores: by State {frame_time}")
+  # transition_time(year) +
   # transition_states(year,
   #                   transition_length = 2,
   #                   state_length = 2) +
-  ease_aes('linear')
+  # ease_aes('linear')
 
-map_with_animation_gif <- animate(map_with_animation)
+map_with_animation_gif <- animate(map_with_animation, nframes = num_years)
 
 map_with_animation_gif
 
-anim_save(file.path(figures_wd,"coup_risk.gif"), map_with_animation_gif)
+anim_save(file.path(figures_wd,"maps_year.gif"), map_with_animation_gif)
 
 ## # ggplot with state labels -----
 

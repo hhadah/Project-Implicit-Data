@@ -39,7 +39,7 @@ font_add_google("Fira Code", "firasans")
 showtext_auto()
 
 theme_customs <- theme(
-  text = element_text(family = 'firasans', size = 16),
+  text = element_text(family = 'firasans', size = 12),
   plot.title.position = 'plot',
   plot.title = element_text(
     face = 'bold', 

@@ -6,19 +6,34 @@
 # Date: July 22nd, 2022
 
 ### Open Race IAT Data
+temp = list.files(file.path(Race_Implicit_Harvard), pattern = "*.csv")
+for (i in 1:length(temp)) assign(temp[i], read_csv(paste0(Race_Implicit_Harvard, temp[i])))
 
-Race_IAT_1 <- read_csv(Race_2002_2014_Implicit_Harvard)%>% 
-  filter(session_status == "C")
-Race_IAT_2 <- read_csv(Race_2015_2019_Implicit_Harvard) %>% 
-  filter(session_status == "C")
-Race_IAT_3 <- read_sav(Race_2020_Implicit_Harvard) %>%
-  filter(session_status == "C")
-Race_IAT_4 <- read_sav(Race_2021_Implicit_Harvard) %>%
-  filter(session_status == "C")
+
+# temp = list.files(file.path(Race_Implicit_Harvard), pattern = "*.sav")
+# for (i in 1:length(temp)) assign(temp[i], read_sav(paste0(Race_Implicit_Harvard, temp[i])))
 
 # append the three datasets
-Race_IAT <- rbind(Race_IAT_1, Race_IAT_2)
-rm(Race_IAT_1, Race_IAT_2)
+`Race IAT.public.2010.csv`$"MSANo"  <-  as.numeric(`Race IAT.public.2010.csv`$"MSANo")
+`Race IAT.public.2012.csv`$"MSANo"  <-  as.numeric(`Race IAT.public.2012.csv`$"MSANo")
+`Race IAT.public.2014.csv`$"MSANo"  <-  as.numeric(`Race IAT.public.2014.csv`$"MSANo")
+
+Race_IAT <- dplyr::bind_rows(`Race IAT.public.2002-2003.csv`, `Race IAT.public.2004.csv`)
+rm(`Race IAT.public.2002-2003.csv`, `Race IAT.public.2004.csv`)
+Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2005.csv`)
+Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2006.csv`)
+Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2007.csv`)
+Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2008.csv`)
+Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2009.csv`)
+Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2010.csv`)
+Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2011.csv`)
+Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2012.csv`)
+Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2013.csv`)
+Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2014.csv`)
+Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2015.csv`)
+
+rm(list=c(ls()[grepl("Race IAT", ls())]))
+
 
 # Race_IAT_2 <- dplyr::bind_rows(Race_IAT_3, Race_IAT_4)
 # rm(Race_IAT_3, Race_IAT_4)
@@ -30,7 +45,7 @@ rm(Race_IAT_1, Race_IAT_2)
 Race_IAT <- Race_IAT %>%
   select(session_id, D_biep.White_Good_all, D_biep.White_Good_36,
          att_7, D_biep.White_Good_47, 
-         raceomb, birthsex, politicalid, 
+         raceomb, sex, politicalid, 
          politicalid_7, age, year, num, 
          religion, countrycit, religionid,
          MSANo, CountyNo, MSAName, STATE,
@@ -46,8 +61,8 @@ Race_IAT <- Race_IAT %>%
          Error = case_when(pct_300 <= 10 & PCT_error_3467<= 30 ~ 'No',
                            pct_300 >  10 | PCT_error_3467 > 30 ~ 'Yes'),
          # recode sex variable into female variable
-         Female = case_when(birthsex == 2 ~ 1,
-                            birthsex == 1 ~ 0)) %>% 
+         Female = case_when(sex == "f" ~ 1,
+                            sex == "m" ~ 0)) %>% 
   filter(Error == 'No')
 
 Race_IAT <- Race_IAT %>% 

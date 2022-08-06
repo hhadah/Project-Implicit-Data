@@ -46,11 +46,12 @@ Race_IAT <- Race_IAT %>%
   select(session_id, D_biep.White_Good_all, D_biep.White_Good_36,
          att_7, D_biep.White_Good_47, 
          raceomb, sex, politicalid, 
-         politicalid_7, age, year, num, 
+         politicalid_7, age, year, num, month,
          religion, countrycit, religionid,
          MSANo, CountyNo, MSAName, STATE,
          pct_300, PCT_error_3467, 
-         session_status, edu_14) %>%
+         session_status, edu_14,
+         ethnicityomb, ethnic, raceombmulti) %>%
   mutate(Implicit=D_biep.White_Good_all, # create implicit prejudice var
          Explicit=att_7, # create explicit prejudice var
          

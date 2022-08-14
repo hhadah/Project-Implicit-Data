@@ -38,6 +38,20 @@ race_grouped_bystate_year <- inner_join(race_grouped_bystate_year,
 race_grouped_bystate_year <- st_as_sf(race_grouped_bystate_year)
 
 
+# use for loop to plot all maps
+
+for (year_map in seq(2002,2021)) {
+  map <- ggplot() + geom_sf(data = race_grouped_bystate_year |> filter(year == year_map), 
+                            aes(fill = value), 
+                            color = "white")+
+    scale_fill_viridis_c(option = "D") +
+    theme(legend.position = "bottom") +
+    labs(title = paste0("Implicit Race IAT
+       Scores: by State ", year_map))
+  map
+  ggsave(path = figures_wd, filename = paste0(year_map,"race_map.png"))
+}
+
 library(gganimate)
 
 ggplot() + geom_sf(data = race_grouped_bystate_year, 

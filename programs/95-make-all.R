@@ -11,7 +11,7 @@ Skin_Implicit_Harvard <- "~/Dropbox/Research/My Research Data and Ideas/ProjectI
 Race_Implicit_Harvard <- "~/Dropbox/Research/My Research Data and Ideas/ProjectImplicit/race_iat/"
 
 ### GiT directories
-git_mdir <- "~/Documents/GiT/Project-Implicit-Data/"
+git_mdir <- "~/Documents/GiT/Project-Implicit-Data"
 datasets <- paste0(git_mdir,"/data/datasets")
 raw <- paste0(git_mdir,"/data/raw")
 tables_wd <- paste0(git_mdir,"/output/tables")

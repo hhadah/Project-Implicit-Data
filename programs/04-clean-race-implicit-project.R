@@ -6,9 +6,22 @@
 # Date: July 22nd, 2022
 
 ### Open Race IAT Data
+# temp = list.files(file.path(Race_Implicit_Harvard), pattern = "*.sav")
+# for (i in 1:length(temp)) assign(temp[i], read_sav(paste0(Race_Implicit_Harvard, temp[i])))
+# 
+# write_csv(`Race IAT.public.2016.sav`, file.path(Race_Implicit_Harvard,"Race_IAT_2016.csv"))
+# write_csv(`Race_IAT.public.2017.sav`, file.path(Race_Implicit_Harvard,"Race_IAT_2017.csv"))
+# write_csv(`Race_IAT.public.2018.sav`, file.path(Race_Implicit_Harvard,"Race_IAT_2018.csv"))
+# write_csv(`Race_IAT.public.2019.sav`, file.path(Race_Implicit_Harvard,"Race_IAT_2019.csv"))
+# write_csv(`Race.IAT.public.2020.sav`, file.path(Race_Implicit_Harvard,"Race_IAT_2020.csv"))
+# write_csv(`Race IAT.public.2021.sav`, file.path(Race_Implicit_Harvard,"Race_IAT_2021.csv"))
+# 
+# rm(list=c(ls()[grepl("Race IAT", ls())]))
+# rm(list=c(ls()[grepl("Race_IAT.", ls())]))
+# rm(list=c(ls()[grepl("Race.IAT.", ls())]))
+
 temp = list.files(file.path(Race_Implicit_Harvard), pattern = "*.csv")
 for (i in 1:length(temp)) assign(temp[i], read_csv(paste0(Race_Implicit_Harvard, temp[i])))
-
 
 # temp = list.files(file.path(Race_Implicit_Harvard), pattern = "*.sav")
 # for (i in 1:length(temp)) assign(temp[i], read_sav(paste0(Race_Implicit_Harvard, temp[i])))
@@ -17,6 +30,41 @@ for (i in 1:length(temp)) assign(temp[i], read_csv(paste0(Race_Implicit_Harvard,
 `Race IAT.public.2010.csv`$"MSANo"  <-  as.numeric(`Race IAT.public.2010.csv`$"MSANo")
 `Race IAT.public.2012.csv`$"MSANo"  <-  as.numeric(`Race IAT.public.2012.csv`$"MSANo")
 `Race IAT.public.2014.csv`$"MSANo"  <-  as.numeric(`Race IAT.public.2014.csv`$"MSANo")
+Race_IAT_2016.csv$"date"   <-  as.character(Race_IAT_2016.csv$"date")
+Race_IAT_2016.csv$"MSANo"  <-  as.numeric(Race_IAT_2016.csv$"MSANo")
+Race_IAT_2016.csv$"countrycit"  <-  as.character(Race_IAT_2016.csv$"countrycit")
+Race_IAT_2016.csv$"countryres"  <-  as.character(Race_IAT_2016.csv$"countryres")
+
+Race_IAT_2017.csv$"date"   <-  as.character(Race_IAT_2017.csv$"date")
+Race_IAT_2017.csv$"MSANo"  <-  as.numeric(Race_IAT_2017.csv$"MSANo")
+
+Race_IAT_2018.csv$"date"   <-  as.character(Race_IAT_2018.csv$"date")
+Race_IAT_2018.csv$"MSANo"  <-  as.numeric(Race_IAT_2018.csv$"MSANo")
+Race_IAT_2018.csv$"iatevaluations001"  <-  as.character(Race_IAT_2018.csv$"iatevaluations001")
+Race_IAT_2018.csv$"iatevaluations002"  <-  as.character(Race_IAT_2018.csv$"iatevaluations002")
+Race_IAT_2018.csv$"iatevaluations003"  <-  as.character(Race_IAT_2018.csv$"iatevaluations003")
+
+Race_IAT_2019.csv$"date"   <-  as.character(Race_IAT_2019.csv$"date")
+Race_IAT_2019.csv$"MSANo"  <-  as.numeric(Race_IAT_2019.csv$"MSANo")
+Race_IAT_2019.csv$"iatevaluations001"  <-  as.character(Race_IAT_2019.csv$"iatevaluations001")
+Race_IAT_2019.csv$"iatevaluations002"  <-  as.character(Race_IAT_2019.csv$"iatevaluations002")
+Race_IAT_2019.csv$"iatevaluations003"  <-  as.character(Race_IAT_2019.csv$"iatevaluations003")
+Race_IAT_2019.csv$"raceombmulti"  <-  as.character(Race_IAT_2019.csv$"raceombmulti")
+
+Race_IAT_2020.csv$"date"   <-  as.character(Race_IAT_2020.csv$"date")
+Race_IAT_2020.csv$"MSANo"  <-  as.numeric(Race_IAT_2020.csv$"MSANo")
+Race_IAT_2020.csv$"iatevaluations001"  <-  as.character(Race_IAT_2020.csv$"iatevaluations001")
+Race_IAT_2020.csv$"iatevaluations002"  <-  as.character(Race_IAT_2020.csv$"iatevaluations002")
+Race_IAT_2020.csv$"iatevaluations003"  <-  as.character(Race_IAT_2020.csv$"iatevaluations003")
+Race_IAT_2020.csv$"raceombmulti"  <-  as.character(Race_IAT_2020.csv$"raceombmulti")
+
+Race_IAT_2021.csv$"date"   <-  as.character(Race_IAT_2021.csv$"date")
+Race_IAT_2021.csv$"MSANo"  <-  as.numeric(Race_IAT_2021.csv$"MSANo")
+Race_IAT_2021.csv$"iatevaluations001"  <-  as.character(Race_IAT_2021.csv$"iatevaluations001")
+Race_IAT_2021.csv$"iatevaluations002"  <-  as.character(Race_IAT_2021.csv$"iatevaluations002")
+Race_IAT_2021.csv$"iatevaluations003"  <-  as.character(Race_IAT_2021.csv$"iatevaluations003")
+Race_IAT_2021.csv$"raceombmulti"  <-  as.character(Race_IAT_2021.csv$"raceombmulti")
+Race_IAT_2021.csv$"CountyNo"  <-  as.character(Race_IAT_2021.csv$"CountyNo")
 
 Race_IAT <- dplyr::bind_rows(`Race IAT.public.2002-2003.csv`, `Race IAT.public.2004.csv`)
 rm(`Race IAT.public.2002-2003.csv`, `Race IAT.public.2004.csv`)
@@ -31,8 +79,19 @@ Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2012.csv`)
 Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2013.csv`)
 Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2014.csv`)
 Race_IAT <- dplyr::bind_rows(Race_IAT, `Race IAT.public.2015.csv`)
-
+Race_IAT <- dplyr::bind_rows(Race_IAT, Race_IAT_2016.csv)
+rm(Race_IAT_2016.csv)
 rm(list=c(ls()[grepl("Race IAT", ls())]))
+Race_IAT <- dplyr::bind_rows(Race_IAT, Race_IAT_2017.csv)
+rm(Race_IAT_2017.csv)
+Race_IAT <- dplyr::bind_rows(Race_IAT, Race_IAT_2018.csv)
+rm(Race_IAT_2018.csv)
+Race_IAT <- dplyr::bind_rows(Race_IAT, Race_IAT_2019.csv)
+rm(Race_IAT_2019.csv)
+Race_IAT <- dplyr::bind_rows(Race_IAT, Race_IAT_2020.csv)
+rm(Race_IAT_2020.csv)
+Race_IAT <- dplyr::bind_rows(Race_IAT, Race_IAT_2021.csv)
+rm(Race_IAT_2021.csv)
 
 
 # Race_IAT_2 <- dplyr::bind_rows(Race_IAT_3, Race_IAT_4)

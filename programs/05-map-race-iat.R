@@ -17,12 +17,34 @@ Race_IAT <- Race_IAT %>%
   rename(state = state.name)
 
 race_grouped_bystate <- Race_IAT %>% 
-  group_by(state) %>% 
+  group_by(state, year) %>% 
   summarise(value = mean(Implicit, na.rm = TRUE)) %>% 
-  select(state, 
+  select(state,
+         year,
          value)
 
-### Get lat & long info -----
+race_grouped_byyear <- Race_IAT %>% 
+  group_by(year) %>% 
+  summarise(value = mean(Implicit, na.rm = TRUE)) %>% 
+  select(
+    year,
+    value)
+
+
+# plot skin iat over years by state
+P51 = unname(createPalette(51,  c("#ff0000", "#00ff00", "#0000ff")))
+p2 <- ggplot(race_grouped_bystate, aes(year, value)) +
+  geom_point(aes(color = factor(state))) +
+  stat_summary(geom = "line", aes(color = factor(state))) +
+  scale_color_manual(values = P51) +
+  labs(x = "Year", y = "IAT Score") +
+  ggtitle("Implicit Race Bias IAT Score Overtime")
+# scale_x_continuous(limits = c(1977,1996), breaks = c(1977, 1982, 1985, 1988, 1990, 1992, 1994, 1996)) +
+# scale_y_continuous(limits = c(-0.65,0.65), breaks = c(-0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6)) +
+# theme(axis.text.x = element_text(angle = 30, hjust = 0.5, vjust = 0.5))
+p2
+ggsave(file.path(figures_wd,"/ImplicitSkinIAT_Time_State.png"), width = 10, height = 4, units = "in")
+
 
 # this "states" dataframe has the lat & long info needed for mapping.
 states <- st_as_sf(map('state', plot = TRUE, fill = TRUE))
@@ -38,14 +60,14 @@ race_grouped_bystate <- st_as_sf(race_grouped_bystate)
 
 ## # ggplot without labels -----
 
-ggplot() + geom_sf(data = race_grouped_bystate, 
+ggplot() + geom_sf(data = race_grouped_bystate |> filter(year == 2010), 
                         aes(fill = value), 
                         color = "white")+
   theme(legend.position = "bottom") +
-  labs(title = "Implicit Prejeduice Scores: by State") +
+  labs(title = "Implicit Race IAT Scores: by State in 2010") +
   guides(fill = guide_colorbar(barwidth = 20, barheight = 1.0)) 
 
-ggsave(file.path(figures_wd,"map_all.png"))
+ggsave(file.path(figures_wd,"map_race_2020.png"))
 
 ## # ggplot with state labels -----
 

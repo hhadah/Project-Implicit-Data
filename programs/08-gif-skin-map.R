@@ -44,7 +44,8 @@ for (year_map in seq(2004,2021)) {
   map <- ggplot() + geom_sf(data = skin_grouped_bystate |> filter(year == year_map), 
                             aes(fill = value), 
                             color = "white")+
-    scale_fill_viridis_c(option = "D") +
+    scale_fill_viridis_c(option = "D", direction = -1) +
+    theme_customs() +
     theme(legend.position = "bottom") +
     labs(title = paste0("Implicit Skin Tone Prejeduice 
        Scores: by State ", year_map))

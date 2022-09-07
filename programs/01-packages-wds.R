@@ -2,9 +2,7 @@
 # packages and set working
 # directories
 
-# author: Hussain Hadah
-
-# date: July 22nd, 2022
+# date: May 18th, 2022
 
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tictoc, parallel, pbapply, future, 
@@ -22,11 +20,13 @@ pacman::p_load(tictoc, parallel, pbapply, future,
                sampleSelection, textme, paletteer, 
                wesanderson, patchwork, RStata, car,
                #textme, lodown, 
-               BiocManager, maps, sf, Polychrome, cdlTools)
-
+               BiocManager, Polychrome,
+               maps, sf, multcomp, cdlTools,
+               finalfit, ggtext, glue, scales, 
+               gganimate, ggrepel, MetBrewer)
 options("RStata.StataPath" = "/Applications/Stata/StataSE.app/Contents/MacOS/stata-se")
 options("RStata.StataVersion" = 17)
-            
+
 # devtools::install_github("thomasp85/patchwork")
 # devtools::install_github("ajdamico/lodown")
 ## My preferred ggplot2 plotting theme (optional)
@@ -38,21 +38,30 @@ font_add_google("Fira Code", "firasans")
 
 showtext_auto()
 
-theme_customs <- theme(
-  text = element_text(family = 'firasans', size = 12),
-  plot.title.position = 'plot',
-  plot.title = element_text(
-    face = 'bold', 
-    colour = "black",
-    #colour = thematic::okabe_ito(8)[6],
-    margin = margin(t = 2, r = 0, b = 7, l = 0, unit = "mm")
-  ),
-)
+theme_customs <- function() {
+  theme_minimal(base_family = "IBM Plex Sans Condensed") +
+    theme(panel.grid.minor = element_blank(),
+          plot.background = element_rect(fill = "white", color = NA),
+          plot.title = element_text(face = "bold"),
+          axis.title = element_text(face = "bold"),
+          strip.text = element_text(face = "bold"),
+          strip.background = element_rect(fill = "grey80", color = NA),
+          legend.title = element_text(face = "bold"))
+}
 
-colors <-  thematic::okabe_ito(5)
+# Make labels use IBM Plex Sans by default
+update_geom_defaults("label", 
+                     list(family = "IBM Plex Sans Condensed"))
+update_geom_defaults(ggtext::GeomRichText, 
+                     list(family = "IBM Plex Sans Condensed"))
+update_geom_defaults("label_repel", 
+                     list(family = "IBM Plex Sans Condensed"))
+
+# Use the Johnson color palette
+clrs <- met.brewer("Johnson")
 
 # theme_set(theme_minimal() + theme_customs)
-theme_set(hrbrthemes::theme_ipsum() + theme_customs)
+# theme_set(hrbrthemes::theme_ipsum() + theme_customs)
 ## Set master directory where all sub-directories are located
 # mdir <- "/Users/hhadah/Dropbox/Research/My Research Data and Ideas/"
 # mdir <- "C:\\Users\\16023\\Dropbox\\Research\\My Research Data and Ideas\\Identification_Paper"

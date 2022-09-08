@@ -10,6 +10,9 @@
 
 censusdata <- read_sav(file.path(raw,"census_data_county_level.sav"))
 
+census_state_data <- read_sav(file.path(raw,"countyno_state_cbsa.2014.sav"))
+
 # save data
 
 write_csv(censusdata, file.path(datasets,"census_data_county_level.csv"))
+write_csv(census_state_data, file.path(datasets,"countyno_state_cbsa.csv"))

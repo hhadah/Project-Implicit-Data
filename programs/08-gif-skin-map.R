@@ -50,7 +50,7 @@ for (year_map in seq(2004,2021)) {
     labs(title = paste0("Implicit Skin Tone Prejeduice 
        Scores: by State ", year_map))
   map
-  ggsave(path = figures_wd, filename = paste0(year_map,"map.png"))
+  ggsave(path = figures_wd, filename = paste0(year_map,"skinmap.png"))
 }
 
 # animation

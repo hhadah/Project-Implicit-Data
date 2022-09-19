@@ -10,6 +10,12 @@ Skin_Implicit_Harvard <- "~/Dropbox/Research/My Research Data and Ideas/ProjectI
 
 Race_Implicit_Harvard <- "~/Dropbox/Research/My Research Data and Ideas/ProjectImplicit/race_iat/"
 
+Arab_Implicit_Harvard      <- "~/Dropbox/Research/My Research Data and Ideas/ProjectImplicit/arab_muslim_iat/Arab IAT.public.2004-2021.csv"
+
+Asian_Implicit_Harvard     <- "~/Dropbox/Research/My Research Data and Ideas/ProjectImplicit/asian_iat/Asian_IAT.public.2004-2021.csv"
+
+Sexuality_Implicit_Harvard <- "~/Dropbox/Research/My Research Data and Ideas/ProjectImplicit/sexuality_iat/Sexuality IAT.public.2004-2021.csv"
+
 ### GiT directories
 git_mdir <- "~/Documents/GiT/Project-Implicit-Data"
 datasets <- paste0(git_mdir,"/data/datasets")

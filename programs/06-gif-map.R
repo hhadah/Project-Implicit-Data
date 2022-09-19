@@ -54,16 +54,20 @@ for (year_map in seq(2002,2021)) {
 
 library(gganimate)
 
-ggplot() + geom_sf(data = race_grouped_bystate_year, 
-                   aes(fill = value), 
-                   color = "white")+
-  theme(legend.position = "bottom") +
-  labs(title = 'Year: {frame_time}') +
-  transition_time(year) +
-  ease_aes('linear')
+p <- race_grouped_bystate_year %>%
+  #filter(Date=="2020-03-30") %>% # Commented it out so it won't run
+  arrange(year) %>%
+  ggplot(aes(fill=value)) +
+  geom_sf(color="white", size=.1) +
+  coord_sf(crs=st_crs(3857), ylim = c(-7842319, 12123480), expand = FALSE) +
+  scale_fill_viridis_c(option = "D") +
+  theme(legend.position="bottom") +
+  labs(title="Arab IAT", tag="{current_frame}") +
+  theme(legend.position=c(.15,-.09), legend.title=element_text(hjust=.5), plot.title=element_text(size=rel(1.5), family="sans", face="bold"), plot.subtitle=element_text(color="#5e5855"), plot.caption=element_text(color="#867e7a"), plot.tag=element_text(hjust=0.5, color="#5e5855"), plot.tag.position=c(0.5, 0.16), panel.background=element_rect(fill="#aad3df", color=NA)) +
+  transition_manual(year)
 guides(fill = guide_colorbar(barwidth = 20, barheight = 1.0)) 
 
-ggsave(file.path(figures_wd,"map_all.png"))
+animate(p, width=1080, height=755, renderer=file_renderer(dir="anim_img/"))
 
 ## # ggplot with state labels -----
 

@@ -1,5 +1,6 @@
 # Import data with geographic variables from Github
-Skin_IAT <- read.csv(file.path(datasets,"Skin_IAT_Clean.csv"))
+Skin_IAT <- read.csv(file.path(datasets,"Skin_IAT_Clean.csv")) |> 
+  mutate(Implicit=(Implicit-mean(Implicit, na.rm = T))/SD(Implicit, na.rm = T))
 
 # this .csv contains all state abbrevs, state nos., and lowercase state names
 state_info <- read.csv(file.path(datasets,"state_info.csv"))
@@ -36,7 +37,15 @@ skin_grouped_bystate <- inner_join(skin_grouped_bystate,
                                    states, 
                                    by = "state") 
 skin_grouped_bystate <- st_as_sf(skin_grouped_bystate)
+library(tidyverse)
+library(tigris)
 
+sts <- states() |> 
+  filter(!STUSPS %in% c('HI', 'AK', 'PR', 'GU', 'VI', 'AS', 'MP'))
+
+DIVISION <- sts %>%
+  group_by(DIVISION) %>% 
+  summarize()
 
 # use for loop to plot all maps
 
@@ -44,14 +53,38 @@ for (year_map in seq(2004,2021)) {
   map <- ggplot() + geom_sf(data = skin_grouped_bystate |> filter(year == year_map), 
                             aes(fill = value), 
                             color = "white")+
+    geom_sf(data = skin_grouped_bystate, 
+            color = 'black', 
+            fill = NA,
+            size = 10) +
+    geom_sf(data = DIVISION, 
+            color = 'red', 
+            fill = NA,
+            size = 10) +
     scale_fill_viridis_c(option = "D", direction = -1) +
-    theme_customs() +
+    theme_customs_map() +
     theme(legend.position = "bottom") +
     labs(title = paste0("Implicit Skin Tone Prejeduice 
        Scores: by State ", year_map))
   map
   ggsave(path = figures_wd, filename = paste0(year_map,"skinmap.png"))
 }
+
+map_facet <- ggplot() + geom_sf(data = skin_grouped_bystate |> filter(year %in% seq(2004,2021,4)), 
+                                aes(fill = value), 
+                                color = "white")+
+  facet_wrap(~year) +
+  geom_sf(data = DIVISION, 
+          color = 'red', 
+          fill = NA,
+          size = 10) +
+  scale_fill_viridis_c(option = "D", direction = -1) +
+  theme_customs_map() +
+  theme(legend.position = "bottom") +
+  labs(title = paste0("Implicit Skin Tone Prejeduice 
+       Scores: by State ", year_map))
+map_facet
+ggsave(path = figures_wd, filename = "skinmap_facet.png")
 
 # animation
 library(gganimate)
@@ -72,11 +105,11 @@ map_with_animation <- map +
 # +
 #   labs(title = "Implicit Skin Tone Prejeduice 
 #        Scores: by State {frame_time}")
-  # transition_time(year) +
-  # transition_states(year,
-  #                   transition_length = 2,
-  #                   state_length = 2) +
-  # ease_aes('linear')
+# transition_time(year) +
+# transition_states(year,
+#                   transition_length = 2,
+#                   state_length = 2) +
+# ease_aes('linear')
 
 map_with_animation_gif <- animate(map_with_animation, nframes = num_years)
 

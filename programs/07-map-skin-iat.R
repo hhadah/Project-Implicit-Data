@@ -58,11 +58,23 @@ ggsave(file.path(figures_wd,"/ImplicitSkinIAT_Time_State.png"), width = 10, heig
 
 ### Get lat & long info -----
 
+library(tidyverse)
+library(sf)
+
+div_dat <- states(cb = FALSE, resolution = '20m') %>%
+  st_drop_geometry() %>%
+  select(NAME, DIVISION) %>%
+  mutate(ID = tolower(NAME)) |> 
+  rename(state = ID)
+
 # this "states" dataframe has the lat & long info needed for mapping.
 states <- st_as_sf(map('state', plot = TRUE, fill = TRUE))
 # states <- map_data("state")
 states <- states %>% 
   rename(state = ID)
+
+states <- states |> 
+  left_join(div_dat)
 
 # join IAT + lowercase names to df that has lat & long
 skin_grouped_bystate <- inner_join(skin_grouped_bystate, 

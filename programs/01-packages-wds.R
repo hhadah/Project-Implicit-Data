@@ -49,6 +49,20 @@ theme_customs <- function() {
           legend.title = element_text(face = "bold"))
 }
 
+theme_customs_map <- function() {
+  theme_minimal(base_family = "IBM Plex Sans Condensed") +
+    theme(panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank(), 
+          axis.line = element_blank(),
+          plot.background = element_rect(fill = "white", color = NA),
+          plot.title = element_text(face = "bold"),
+          axis.title = element_blank(),
+          axis.text = element_blank(),
+          strip.text = element_blank(),
+          strip.background = element_blank(),
+          legend.title = element_text(face = "bold"))
+}
 # Make labels use IBM Plex Sans by default
 update_geom_defaults("label", 
                      list(family = "IBM Plex Sans Condensed"))
@@ -59,6 +73,7 @@ update_geom_defaults("label_repel",
 
 # Use the Johnson color palette
 clrs <- met.brewer("Johnson")
+
 
 # theme_set(theme_minimal() + theme_customs)
 # theme_set(hrbrthemes::theme_ipsum() + theme_customs)

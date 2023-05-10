@@ -84,7 +84,7 @@ skin_grouped_bystate <- st_as_sf(skin_grouped_bystate)
 
 ## # ggplot without labels -----
 
-ggplot() + geom_sf(data = skin_grouped_bystate |> filter(year == 2010), 
+ggplot() + geom_sf(data = skin_grouped_bystate, 
                         aes(fill = value), 
                         color = "white")+
   theme(legend.position = "bottom") +
@@ -92,7 +92,6 @@ ggplot() + geom_sf(data = skin_grouped_bystate |> filter(year == 2010),
   guides(fill = guide_colorbar(barwidth = 20, barheight = 1.0)) 
 
 ggsave(file.path(figures_wd,"map_skiniat_all.png"))
-
 ## # ggplot with state labels -----
 
 # Use state_info to add state abbreviations to be used for labelling

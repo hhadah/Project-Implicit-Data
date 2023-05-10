@@ -54,21 +54,47 @@ for (year_map in seq(2004,2021)) {
                             aes(fill = value), 
                             color = "white")+
     geom_sf(data = skin_grouped_bystate, 
-            color = 'black', 
+            color = 'white', 
             fill = NA,
-            size = 10) +
+            size = 0.01) +
     geom_sf(data = DIVISION, 
             color = 'red', 
             fill = NA,
-            size = 10) +
-    scale_fill_viridis_c(option = "D", direction = -1) +
+            size = 0.9) +
+    scale_fill_viridis_c(option = "D", direction = -1, name = "Bias"#,
+                         #breaks = seq(-0.4,0.4,0.2)
+                         ) +
     theme_customs_map() +
-    theme(legend.position = "bottom") +
-    labs(title = paste0("Implicit Skin Tone Prejeduice 
-       Scores: by State ", year_map))
+    theme(legend.position = "bottom")
   map
   ggsave(path = figures_wd, filename = paste0(year_map,"skinmap.png"))
+  ggsave(path = "~/Documents/GiT/Attitudes-and-Identity/my_paper/figure", 
+         filename = paste0(year_map,"skinmap.png"), width = 8, height = 5, 
+         units = c("in"))
+  
 }
+
+map <- ggplot() + geom_sf(data = skin_grouped_bystate, 
+                          aes(fill = value), 
+                          color = "white")+
+  geom_sf(data = skin_grouped_bystate, 
+          color = 'white', 
+          fill = NA,
+          size = 0.01) +
+  geom_sf(data = DIVISION, 
+          color = 'red', 
+          fill = NA,
+          size = 1.00) +
+  scale_fill_viridis_c(option = "D", direction = -1, name = "Bias"#,
+                       #breaks = seq(-0.4,0.4,0.2)
+  ) +
+  theme_customs_map() +
+  theme(legend.position = "bottom")
+map
+ggsave(path = figures_wd, filename = paste0(year_map,"skinmap.png"))
+ggsave(path = "~/Documents/GiT/Attitudes-and-Identity/my_paper/figure", 
+       filename = paste0(year_map,"skinmap.png"), width = 8, height = 5, 
+       units = c("in"))
 
 map_facet <- ggplot() + geom_sf(data = skin_grouped_bystate |> filter(year %in% seq(2004,2021,4)), 
                                 aes(fill = value), 

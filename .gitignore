@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# ignore all files in data/raw data/datasets
+data/raw/*
+data/datasets/*
